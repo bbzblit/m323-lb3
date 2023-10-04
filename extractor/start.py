@@ -28,8 +28,20 @@ def modify_df(df: DataFrame) -> DataFrame:
     df = df[df["PRODUKT_ID"] == "Zug"]
     
     fail_ids = df[df["FAELLT_AUS_TF"]]["FAHRT_ID"].unique().tolist()
+    
     df = df[~df["FAHRT_ID"].isin(fail_ids)]
     
+    ids = df["FAHRT_ID"].unique().tolist()
+
+    for id in ids:
+        line = df[df["FAHRT_ID"] == id]
+        
+        start = line[line["ANKUNFTSZEIT"].isna()]
+        end = line[line["ABFAHRTSZEIT"].isna()]
+
+        if len(start) == 0 or len(end) == 0:
+            df = df[df["FAHRT_ID"] != id]
+
     df = df.drop(["FAELLT_AUS_TF", "PRODUKT_ID"], axis=1)
     df.replace("", np.nan, inplace=True)
 
@@ -61,6 +73,7 @@ def modify_df(df: DataFrame) -> DataFrame:
 
     df = df.dropna(subset=["HALTESTELLEN_NAME"])
 
+
     return df
 
 
@@ -72,7 +85,6 @@ def list_files(dir: str = "./data"):
 
 def main():
     for file in list_files():
-        print(file)
         df = pd.read_csv(file, engine="pyarrow", encoding="utf-8", delimiter=";")
         df = modify_df(df)
         df.to_csv(
