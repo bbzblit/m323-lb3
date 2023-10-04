@@ -41,7 +41,7 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
             "Train": train_line,
             "Date": date,
             "Time": time,
-            "Stops": " -> ".join(stops[::-1]),
+            "Stops": " -> ".join(stops),
         },
         "Median Delay": df["DELAY_ANKUFT"].mean(),
         "Maximum Delay": df["DELAY_ANKUFT"].max(),
