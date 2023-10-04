@@ -26,8 +26,10 @@ def modify_df(df: DataFrame) -> DataFrame:
     )
 
     df = df[df["PRODUKT_ID"] == "Zug"]
-
-    df = df[~df["FAELLT_AUS_TF"]]
+    
+    fail_ids = df[df["FAELLT_AUS_TF"]]["FAHRT_ID"].unique().tolist()
+    df = df[~df["FAHRT_ID"].isin(fail_ids)]
+    
     df = df.drop(["FAELLT_AUS_TF", "PRODUKT_ID"], axis=1)
     df.replace("", np.nan, inplace=True)
 

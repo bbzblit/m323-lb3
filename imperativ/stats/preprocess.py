@@ -17,15 +17,19 @@ def get_start_times(date: datetime.date, train_line: str) -> list[str]:
         start_time = datetime.datetime.strptime(
             row["ABFAHRTSZEIT"], "%Y-%m-%d %H:%M:%S"
         )
+
         endstation = row["HALTESTELLEN_NAME"]
-        beginstation = end_df[end_df["FAHRT_ID"] == row["FAHRT_ID"]].iloc[0][
-            "HALTESTELLEN_NAME"
-        ]
+        end_serie = end_df[end_df["FAHRT_ID"] == row["FAHRT_ID"]].iloc[0]
+        beginstation = end_serie["HALTESTELLEN_NAME"]
+
+        end_time = datetime.datetime.strptime(
+            end_serie["ANKUNFTSZEIT"], "%Y-%m-%d %H:%M:%S"
+        )
 
         times.append(
             (
                 row["ABFAHRTSZEIT"],
-                f"{start_time.strftime('%H:%M')} ({beginstation} -> {endstation})",
+                f"{start_time.strftime('%H:%M')} ({beginstation}) -> {end_time.strftime('%H:%M')} ({endstation})",
             )
         )
     return sorted(times)

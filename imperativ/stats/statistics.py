@@ -32,10 +32,9 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
     fahrt_id = df[df["ABFAHRTSZEIT"] == time].iloc[0]["FAHRT_ID"]
     df = df[df["FAHRT_ID"] == fahrt_id]
     stops = df["HALTESTELLEN_NAME"].unique().tolist()
-    print(stops)
+
     df[df["DELAY_ANKUFT"] < 0]  = 0
     df[df["DELAY_ABFAHRT"] < 0]  = 0
-
     return {
         "meta":  {
             "Train": train_line,
@@ -48,4 +47,5 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
         "Minimum Delay": df["DELAY_ANKUFT"].min(),
         "Average Delay": df["DELAY_ANKUFT"].mean(),
         "Delay at Beginning": df[df["ANKUNFTSZEIT"].isna()].iloc[0]["DELAY_ABFAHRT"],
+        "Delay at End": df[df["ABFAHRTSZEIT"].isna()].iloc[0]["DELAY_ANKUFT"],
     }
