@@ -37,14 +37,27 @@ def get_start_time(date: date, train_line: str) -> datetime:
 
 def dict_to_table(table: Table, dictionary: dict) -> Table:
     for key, value in dictionary.items():
-        if isinstance(value, dict):
-            dict_to_table(table, value)
-            table.add_section()
-        else:
-            table.add_row(key, ", ".join(v for v in value if isinstance(v, str)) if isinstance(value, list) else str(value))
+        table.add_row(key, ", ".join(v for v in value if isinstance(v, str)) if isinstance(value, list) else str(value))
     table.add_section()
     return table
 
+def dict_to_table_time(table: Table, dictionary: dict) -> Table:
+    for key, value in dictionary.items():
+        if isinstance(value, dict):
+            table.add_section()
+            dict_to_table_time(table, value)
+            table.add_section()
+        elif value % 60 == 0:
+            if value == 0:  
+                table.add_row(key, "No Delay")
+            else:
+                table.add_row(key, f"{round(value // 60)} min")
+        else:
+            if value < 60:
+                table.add_row(key, f"{round(value)} sec")
+            else:
+                table.add_row(key, f"{round(value // 60)} min {round(value % 60)} sec")
+    return table
 
 def to_table(statistics: dict, train_line: str):
     table = Table(
@@ -58,11 +71,8 @@ def to_table(statistics: dict, train_line: str):
     dict_to_table(table, statistics["meta"])
     del statistics["meta"]
 
-    for key, value in statistics.items():
-        if value % 60 == 0:
-            table.add_row(key, f"{round(value // 60)} min")
-        else:
-            table.add_row(key, f"{round(value // 60)} min {round(value % 60)} sec")
+    dict_to_table_time(table, statistics)
+
     print(table)
 
 
