@@ -37,9 +37,9 @@ def modify_df(df: DataFrame) -> DataFrame:
 
     i = 0
     for index, row in df.iterrows():
+        df.loc[index,"FAHRT_ID"] = i
         if(pd.isnull(row["ABFAHRTSZEIT"])):
             i += 1
-        df.loc[index,"FAHRT_ID"] = i
     
     df["FAHRT_ID"] = df["FAHRT_ID"].astype(int)
 
