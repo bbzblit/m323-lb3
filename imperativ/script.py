@@ -11,7 +11,7 @@ import stats
 
 def get_available_dates() -> list[date]:
     files = [f for f in listdir("./data") if isfile(join("./data", f))]
-    return {date.fromisoformat(f.removesuffix(".csv")) for f in files}
+    return sorted({date.fromisoformat(f.removesuffix(".csv")) for f in files})
 
 
 def get_train_line(date: date) -> str:
@@ -37,26 +37,12 @@ def get_start_time(date: date, train_line: str) -> datetime:
 
 def dict_to_table(table: Table, dictionary: dict) -> Table:
     for key, value in dictionary.items():
-        table.add_row(key, ", ".join(v for v in value if isinstance(v, str)) if isinstance(value, list) else str(value))
-    table.add_section()
-    return table
-
-def dict_to_table_time(table: Table, dictionary: dict) -> Table:
-    for key, value in dictionary.items():
         if isinstance(value, dict):
-            table.add_section()
-            dict_to_table_time(table, value)
-            table.add_section()
-        elif value % 60 == 0:
-            if value == 0:  
-                table.add_row(key, "No Delay")
-            else:
-                table.add_row(key, f"{round(value // 60)} min")
+            table.add_row(f"[bold][bright_magenta]{key}[/bold][/bright_magenta]")
+            dict_to_table(table, value)
         else:
-            if value < 60:
-                table.add_row(key, f"{round(value)} sec")
-            else:
-                table.add_row(key, f"{round(value // 60)} min {round(value % 60)} sec")
+            table.add_row(key, ", ".join(v for v in value if isinstance(v, str)) if isinstance(value, list) else str(value))
+    table.add_section()
     return table
 
 def to_table(statistics: dict, train_line: str):
@@ -68,16 +54,14 @@ def to_table(statistics: dict, train_line: str):
     table.add_column("Statistic")
     table.add_column("Value")
 
-    dict_to_table(table, statistics["meta"])
-    del statistics["meta"]
-
-    dict_to_table_time(table, statistics)
+    dict_to_table(table, statistics)
 
     print(table)
 
 
 def run_statistic_of_day(date: date):
-    pass
+    statistics = stats.get_statistics_of_day(date)
+    to_table(statistics, "All")
 
 
 def run_delay_of_exact_connection(date: date):
