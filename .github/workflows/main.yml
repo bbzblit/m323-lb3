@@ -17,9 +17,9 @@ jobs:
     - name: Package Application
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
-        path: src
+        path: imperativ/script.py
 
     - uses: actions/upload-artifact@v2
       with:
-        name: name-of-artifact
-        path: extractor/start.py
+        name: imperativ
+        path: src/dist/windows
