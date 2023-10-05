@@ -40,10 +40,19 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
     df.loc[df["DELAY_ANKUFT"] < 0, "DELAY_ANKUFT"] = 0
     df.loc[df["DELAY_ABFAHRT"] < 0, "DELAY_ABFAHRT"] = 0
 
+    delay_per_stop = {stops[0]: f"{time_to_string(df['DELAY_ABFAHRT'].iloc[0])} (Departure Delay)"}
+    delay_per_stop.update(
+        {
+            stop: time_to_string(delay)
+            for stop, delay in zip(stops[1:], df["DELAY_ANKUFT"].tolist()[1:])
+        }
+    )
+
     return {
         "Meta Informations": {
             "Train": train_line,
-            "Time": time,
+            "Start Time": time,
+            "End Time": df["ANKUNFTSZEIT"].iloc[-1],
             "Stops": " -> ".join(stops),
         },
         "Delay Statistics": {
@@ -52,10 +61,7 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
             "Average Delay": time_to_string(df["DELAY_ANKUFT"].mean()),
             "Median Delay": time_to_string(df["DELAY_ANKUFT"].median()),
         },
-        "Delay per Stop": {
-            stop: time_to_string(delay)
-            for stop, delay in zip(stops[1:], df["DELAY_ANKUFT"].tolist()[1:])
-        },
+        "Delay per Stop": delay_per_stop,
     }
 
 
