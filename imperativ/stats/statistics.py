@@ -1,15 +1,26 @@
 from datetime import date, datetime
+from pandas import DataFrame
 import pandas as pd
 from .helper import time_to_string
 
 
+def _remove_negative_delays(df: DataFrame) -> DataFrame:
+    df.loc[df["DELAY_ANKUFT"] < 0, "DELAY_ANKUFT"] = 0
+    df.loc[df["DELAY_ABFAHRT"] < 0, "DELAY_ABFAHRT"] = 0
+    return df
+
+
+def _from_csv(date: date) -> DataFrame:
+    return pd.read_csv(f"./data/{date.isoformat()}.csv")
+
+
 def get_statistics_of_train(date: date, train: str):
-    df = pd.read_csv(f"./data/{date.isoformat()}.csv")
+    df = _from_csv(date)
 
     df = df[df["LINIEN_TEXT"] == train]
     df = df[df["DELAY_ABFAHRT"].isna()]
 
-    df.loc[df["DELAY_ANKUFT"] < 0, "DELAY_ANKUFT"] = 0
+    df = _remove_negative_delays(df)
 
     stops = df["HALTESTELLEN_NAME"].unique().tolist()
 
@@ -30,17 +41,18 @@ def get_statistics_of_train(date: date, train: str):
 
 
 def get_delay_of_exact_connection(date: date, train_line: str, time: str):
-    df = pd.read_csv(f"./data/{date.isoformat()}.csv")
+    df = _from_csv(date)
 
     df = df[df["LINIEN_TEXT"] == train_line]
     fahrt_id = df[df["ABFAHRTSZEIT"] == time].iloc[0]["FAHRT_ID"]
     df = df[df["FAHRT_ID"] == fahrt_id]
     stops = df["HALTESTELLEN_NAME"].unique().tolist()
 
-    df.loc[df["DELAY_ANKUFT"] < 0, "DELAY_ANKUFT"] = 0
-    df.loc[df["DELAY_ABFAHRT"] < 0, "DELAY_ABFAHRT"] = 0
+    df = _remove_negative_delays(df)
 
-    delay_per_stop = {stops[0]: f"{time_to_string(df['DELAY_ABFAHRT'].iloc[0])} (Departure Delay)"}
+    delay_per_stop = {
+        stops[0]: f"{time_to_string(df['DELAY_ABFAHRT'].iloc[0])} (Departure Delay)"
+    }
     delay_per_stop.update(
         {
             stop: time_to_string(delay)
@@ -66,9 +78,9 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
 
 
 def get_statistics_of_day(date: date):
-    df = pd.read_csv(f"./data/{date.isoformat()}.csv")
+    df = _from_csv(date)
+    df = _remove_negative_delays(df)
 
-    df.loc[df["DELAY_ANKUFT"] < 0, "DELAY_ANKUFT"] = 0
     maximum = df["DELAY_ANKUFT"].max()
     maximum = f"{time_to_string(maximum)} (Train: {', '.join(df[df['DELAY_ANKUFT'] == maximum]['LINIEN_TEXT'].tolist())})"
 
