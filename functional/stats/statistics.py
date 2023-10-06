@@ -35,6 +35,11 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
     stops = df["HALTESTELLEN_NAME"]
     df = remove_negative_delay(df)
 
+    delay_per_stop = {
+            stop: time_to_string(delay)
+            for stop, delay in zip(stops, [df["DELAY_ANKUFT"][0]] + df["DELAY_ANKUFT"].tolist()[1:])
+    }
+    
     return {
         "Meta Informations": {
             "Train": train_line,
@@ -47,7 +52,8 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
             "Maximum Delay": time_to_string(df["DELAY_ANKUFT"].max()),
             "Average Delay": time_to_string(df["DELAY_ANKUFT"].mean()),
             "Median Delay": time_to_string(df["DELAY_ANKUFT"].median()),
-        }
+        },
+        "Delay per Stop": delay_per_stop,
     }
 
 

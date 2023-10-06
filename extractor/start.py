@@ -85,6 +85,7 @@ def list_files(dir: str = "./data"):
 
 def main():
     for file in list_files():
+        print(file)
         df = pd.read_csv(file, engine="pyarrow", encoding="utf-8", delimiter=";")
         df = modify_df(df)
         df.to_csv(

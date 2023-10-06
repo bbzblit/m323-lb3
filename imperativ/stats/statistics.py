@@ -51,7 +51,7 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
     df = _remove_negative_delays(df)
 
     delay_per_stop = {
-        stops[0]: f"{time_to_string(df['DELAY_ABFAHRT'].iloc[0])} (Departure Delay)"
+        stops[0]: f"{time_to_string(df['DELAY_ABFAHRT'].iloc[0])}"
     }
     delay_per_stop.update(
         {
