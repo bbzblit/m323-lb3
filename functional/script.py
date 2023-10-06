@@ -8,7 +8,6 @@ from InquirerPy import inquirer
 from os.path import isfile, join
 from os import listdir
 import stats
-import sys
 
 
 def get_available_dates() -> list[date]:
