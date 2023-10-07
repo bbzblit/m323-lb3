@@ -16,6 +16,9 @@ class FunctionalDF:
         if isinstance(key, str):
             return FunctionalSeries(self.content[key])
         return {k: v[key] for k, v in self.content.items()}
+    
+    def __len__(self) -> int:
+        return len(list(self.content.values())[0])
 
     def to_int(self, key: str) -> "FunctionalDF":
         return FunctionalDF(

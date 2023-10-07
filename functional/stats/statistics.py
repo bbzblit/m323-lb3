@@ -8,13 +8,18 @@ from fpandas import FunctionalDF
 
 
 def get_statistics_of_train(date: date, train: str):
-    """
+    df = FunctionalDF.from_csv(date)
+    df = df.filter_content("LINIEN_TEXT", lambda x: x == train)
+    df = remove_negative_delay(df)
+    df = df.filter_content("ABFAHRTSZEIT", lambda x: x == "")
+    stops = df["HALTESTELLEN_NAME"].toset()
+
     return {
         "Meta Informations": {
             "Rides": len(df),
             "Train": train,
             "Date": date,
-            "Endstations": stops,
+            "Endstations": ", ".join(stops),
         },
         "Delay Statistics": {
             "Minimum Delay": time_to_string(df["DELAY_ANKUFT"].min()),
@@ -23,8 +28,7 @@ def get_statistics_of_train(date: date, train: str):
             "Median Delay": time_to_string(df["DELAY_ANKUFT"].median()),
         },
     }
-    """
-
+    
 
 def get_delay_of_exact_connection(date: date, train_line: str, time: str):
     df = FunctionalDF.from_csv(date)
@@ -55,20 +59,6 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
         },
         "Delay per Stop": delay_per_stop,
     }
-
-
-"""
-    delay_per_stop = {
-        stops[0]: f"{time_to_string(df['DELAY_ABFAHRT'].iloc[0])} (Departure Delay)"
-    }
-    delay_per_stop.update(
-        {
-            stop: time_to_string(delay)
-            for stop, delay in zip(stops[1:], df["DELAY_ANKUFT"].tolist()[1:])
-        }
-    )
-"""
-
 
 def get_statistics_of_day(date: date):
     df = FunctionalDF.from_csv(date)
