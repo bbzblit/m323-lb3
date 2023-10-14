@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from pandas import DataFrame
 import pandas as pd
-from .helper import time_to_string
+from .helper import time_to_string, _from_csv
 
 
 def _remove_negative_delays(df: DataFrame) -> DataFrame:
@@ -9,9 +9,6 @@ def _remove_negative_delays(df: DataFrame) -> DataFrame:
     df.loc[df["DELAY_ABFAHRT"] < 0, "DELAY_ABFAHRT"] = 0
     return df
 
-
-def _from_csv(date: date) -> DataFrame:
-    return pd.read_csv(f"./data/{date.isoformat()}.csv")
 
 
 def get_statistics_of_train(date: date, train: str):

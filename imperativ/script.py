@@ -6,6 +6,7 @@ from rich.table import Table
 from InquirerPy import inquirer
 from os.path import isfile, join
 from os import listdir
+from dotenv import load_dotenv, find_dotenv
 import stats
 
 
@@ -78,6 +79,12 @@ def run_statistic_of_train_line(date: date):
 
     to_table(statistics, train_line)
 
+def run_chat_with_ai(date: date):
+    question = inquirer.text(message="What do you want to ask the AI?").execute()
+    answer = stats.ask_ai(question, date)
+
+    print(f"[bold]Answer:[/bold] {answer}")
+
 
 def main():
     with Progress(
@@ -99,6 +106,7 @@ def main():
             "Statistic of Day",
             "Delay of exact connection",
             "Statistic of Train Line",
+            "Chat with AI"
         ],
     ).execute()
 
@@ -108,6 +116,8 @@ def main():
         run_delay_of_exact_connection(date)
     elif task == "Statistic of Train Line":
         run_statistic_of_train_line(date)
+    elif task == "Chat with AI":
+        run_chat_with_ai(date)
     else:
         print(
             "[red]Internal programm error[/red] - Task not found\nPlease open an issue on [link=https://github.com/bbzblit/m323-lb3]GitHub[/link]"
@@ -115,4 +125,5 @@ def main():
 
 
 if __name__ == "__main__":
+    load_dotenv(find_dotenv())
     typer.run(main)
