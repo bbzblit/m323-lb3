@@ -1,4 +1,10 @@
 from typing import Any, Iterable
+from functools import reduce
+
+_sum = lambda arr: reduce(lambda x, y: x + y, arr)
+_len = lambda arr: reduce(lambda x, y: x + 1, arr, 0)
+_min = lambda arr: reduce(lambda x, y: x if x < y else y, arr)
+_max = lambda arr: reduce(lambda x, y: y if x < y else x, arr)
 
 class FunctionalSeries:
     
@@ -27,16 +33,22 @@ class FunctionalSeries:
 
     def mean(self):
         self._to_int()
-        return sum(self.serie) / len(self.serie)
+        return _sum(self.serie) / _len(self.serie)
     
     def median(self):
         self._to_int()
-        return sorted(self.serie)[len(self.serie) // 2]
+        length = _len(self.serie)
+        sorted_serie = sorted(self.serie)
+    
+        if length % 2 == 0:
+            return (sorted_serie[length // 2] + sorted_serie[length // 2 + 1]) / 2
+    
+        return sorted_serie[length // 2]
     
     def min(self):
         self._to_int()
-        return min(self.serie)
+        return _min(self.serie)
     
     def max(self):
         self._to_int()
-        return max(self.serie)
+        return _max(self.serie)

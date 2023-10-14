@@ -67,9 +67,8 @@ class FunctionalDF:
             content = dict(
                 zip(
                     (i for i in reader.fieldnames),
-                    zip(*[row.values() for row in reader]),
+                    zip(*map(lambda row: row.values(), reader)),
                 )
             )
         return FunctionalDF(content)
-
 

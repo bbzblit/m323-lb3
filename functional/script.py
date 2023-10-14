@@ -11,7 +11,7 @@ import stats
 
 
 def get_available_dates() -> list[date]:
-    files = [f for f in listdir("./data") if isfile(join("./data", f))]
+    files = filter(lambda f: isfile(join("./data", f)), listdir("./data"))
     return sorted({date.fromisoformat(f.removesuffix(".csv")) for f in files})
 
 
@@ -28,7 +28,7 @@ def get_start_time(date: date, train_line: str) -> datetime:
 
     selected_time = inquirer.select(
         message="Select the start time of the connection you want to look at",
-        choices=[choice[1] for choice in start_times],
+        choices=map(lambda x: x[1], start_times),
     ).execute()
 
     for time in start_times:
