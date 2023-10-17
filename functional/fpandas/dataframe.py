@@ -30,10 +30,10 @@ class FunctionalDF:
         indexes = [i for i, x in enumerate(self.content[key]) if expression(x)]
         return FunctionalDF(
             {
-                key: [new_value if i in indexes else v for i, v in enumerate(value)]
-                if key == key
+                k: [new_value if i in indexes else v for i, v in enumerate(value)]
+                if key == k
                 else value
-                for key, value in self.content.items()
+                for k, value in self.content.items()
             }
         )
     

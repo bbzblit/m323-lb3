@@ -10,8 +10,9 @@ from fpandas import FunctionalDF
 def get_statistics_of_train(date: date, train: str):
     df = FunctionalDF.from_csv(date)
     df = df.filter_content("LINIEN_TEXT", lambda x: x == train)
+    df = df.filter_content("DELAY_ABFAHRT", lambda x: x == "")
     df = remove_negative_delay(df)
-    df = df.filter_content("ABFAHRTSZEIT", lambda x: x == "")
+
     stops = df["HALTESTELLEN_NAME"].toset()
 
     return {
@@ -62,9 +63,8 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
 
 def get_statistics_of_day(date: date):
     df = FunctionalDF.from_csv(date)
-
+    df = df.filter_content("DELAY_ANKUFT", lambda x: x != "")
     df = remove_negative_delay(df)
-
     delays = df["DELAY_ANKUFT"]
     maximum = delays.max()
 
