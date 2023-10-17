@@ -15,7 +15,6 @@
       - [List Comprehension combine map and filter](#list-comprehension-combine-map-and-filter)
   - [Projektantrag](#projektantrag)
   - [Output](#output)
-  - [Tabelle Erfüllungsgrad](#tabelle-erfüllungsgrad)
   - [Fazit](#fazit)
 
 <br>
@@ -24,9 +23,15 @@
 
 ### Wahl der Programmiersprache
 
-Als wir die imperative Programmiersprache gewählt haben, entschieden wir uns für [Python](https://www.python.org/), da man in Python sowohl imperativ als auch funktional programmieren kann. Durch Python Library [pandas](https://pandas.pydata.org/) können zudem einige zusätzliche funktionale Elemente verwendet werden.
+Als wir die imperative Programmiersprache gewählt haben, entschieden wir uns für [Python](https://www.python.org/), da man in Python sowohl imperativ als auch funktional programmieren kann. Durch Python Library [pandas](https://pandas.pydata.org/) können zudem einige zusätzliche funktionale Elemente verwendet werden. 
+
+<br>
 
 ### Funktionale Elemente
+
+Folgend sind diverse funktionale Elemente, die in Python verwendet werden können, jeweils mit Beispiel und kurzer Beschreibung aufgeführt.
+
+<br>
 
 #### Map
 ```python
@@ -111,10 +116,6 @@ Oben im Screenshot sieht man die Inputs im CLI (Command-Line-Interface) und unte
 
 ![](./images/cli.png)
 
-<br>
-
-## Tabelle Erfüllungsgrad
-
 [...]
 
 <br>
@@ -122,5 +123,3 @@ Oben im Screenshot sieht man die Inputs im CLI (Command-Line-Interface) und unte
 ## Fazit
 
 [...]
-
-<br>
