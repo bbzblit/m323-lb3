@@ -20,16 +20,6 @@ class FunctionalDF:
     def __len__(self) -> int:
         return len(list(self.content.values())[0])
 
-    def to_int(self, key: str) -> "FunctionalDF":
-        return FunctionalDF(
-            {
-                k: [int(v) if v != "" else 0 for v in value]
-                if k == key
-                else value
-                for k, value in self.content.items()
-            }
-        )
-
     def filter_content(self, key: str, expression) -> "FunctionalDF":
         indexes = [i for i, x in enumerate(self.content[key]) if expression(x)]
         return FunctionalDF(

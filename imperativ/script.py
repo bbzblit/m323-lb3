@@ -1,4 +1,3 @@
-import typer
 from datetime import date, datetime
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich import print
@@ -7,6 +6,8 @@ from InquirerPy import inquirer
 from os.path import isfile, join
 from os import listdir
 from dotenv import load_dotenv, find_dotenv
+
+import typer
 import stats
 
 
