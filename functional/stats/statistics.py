@@ -59,7 +59,10 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
     fahrt_id = df.filter_content("ABFAHRTSZEIT", lambda x: x == time)[0]["FAHRT_ID"]
     df = df.filter_content("FAHRT_ID", lambda x: x == fahrt_id)
     stops = df["HALTESTELLEN_NAME"]
+    delay_df = df.filter_content("DELAY_ANKUFT", lambda x: x != "")
     df = remove_negative_delay(df)
+    delay_df = remove_negative_delay(delay_df)
+
 
     delay_per_stop = {
             stop: time_to_string(delay)
@@ -74,10 +77,10 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
             "Stops": " -> ".join(stops),
         },
         "Delay Statistics": {
-            "Minimum Delay": time_to_string(df["DELAY_ANKUFT"].min()),
-            "Maximum Delay": time_to_string(df["DELAY_ANKUFT"].max()),
-            "Average Delay": time_to_string(df["DELAY_ANKUFT"].mean()),
-            "Median Delay": time_to_string(df["DELAY_ANKUFT"].median()),
+            "Minimum Delay": time_to_string(delay_df["DELAY_ANKUFT"].min()),
+            "Maximum Delay": time_to_string(delay_df["DELAY_ANKUFT"].max()),
+            "Average Delay": time_to_string(delay_df["DELAY_ANKUFT"].mean()),
+            "Median Delay": time_to_string(delay_df["DELAY_ANKUFT"].median()),
         },
         "Delay per Stop": delay_per_stop,
     }

@@ -94,6 +94,8 @@ class FunctionalSeries:
         self._to_int()
         length = _len(self.serie)
         sorted_serie = sorted(self.serie)
+        if length % 2 == 0:
+            return (sorted_serie[length // 2] + sorted_serie[length // 2 - 1]) / 2
         return sorted_serie[length // 2]
     
     def min(self):

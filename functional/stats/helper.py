@@ -29,7 +29,7 @@ def time_to_string(value: int) -> str:
         return f"[orange_red1]{round(value // 60)} min {round(value % 60)} sec[/orange_red1]"    
     return f"[bright_red]{round(value // 60)} min {round(value % 60)} sec[/bright_red]"
     
-    
+
 def remove_negative_delay(df: FunctionalDF) -> FunctionalDF:
     """
     Removes negative values from the 'DELAY_ANKUFT' column of the given FunctionalDF object.
