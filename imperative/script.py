@@ -1,3 +1,9 @@
+"""
+An imperative script to run different tasks on the data.
+The data is loaded from the `./data` folder.
+The data is real life data from the SBB which contains the expected departure and the real departure of trains.
+"""
+
 from datetime import date, datetime
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich import print

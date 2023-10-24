@@ -1,10 +1,11 @@
 """
 Library to analyze the data.
-Written in an functional style.
+Written in an imperative style.
 """
 
 from .preprocess import *
 from .statistics import *
+from .ai import *
 
 __author__ = "Yannick Mueller, Levin Schaller"
 __version__ = "1.0.0"
