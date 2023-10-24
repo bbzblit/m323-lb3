@@ -1,13 +1,22 @@
-from datetime import date, datetime
-from typing import Any
-import pandas as pd
+from datetime import date
 from .helper import time_to_string, remove_negative_delay
-import csv
-from typing import Iterable
 from fpandas import FunctionalDF
 
 
 def get_statistics_of_train(date: date, train: str):
+    """
+    Returns a dictionary containing statistics of a train's delay for a given date.
+
+    Args:
+    - date (date): The date for which the statistics are to be calculated.
+    - train (str): The name of the train for which the statistics are to be calculated.
+
+    Returns:
+    - A dictionary containing the following keys:
+        - "Meta Informations": A dictionary containing meta information about the train and date.
+        - "Delay Statistics": A dictionary containing delay statistics of the train for the given date.
+    """
+
     df = FunctionalDF.from_csv(date)
     df = df.filter_content("LINIEN_TEXT", lambda x: x == train)
     df = df.filter_content("DELAY_ABFAHRT", lambda x: x == "")
@@ -32,6 +41,18 @@ def get_statistics_of_train(date: date, train: str):
     
 
 def get_delay_of_exact_connection(date: date, train_line: str, time: str):
+    """
+    Returns delay statistics and delay per stop for a specific train connection at a specific time.
+
+    Args:
+        date (date): The date of the train connection.
+        train_line (str): The name of the train line.
+        time (str): The departure time of the train.
+
+    Returns:
+        dict: A dictionary containing the delay statistics and delay per stop for the specified train connection.
+    """
+
     df = FunctionalDF.from_csv(date)
     
     df = df.filter_content("LINIEN_TEXT", lambda x: x == train_line)
@@ -62,6 +83,26 @@ def get_delay_of_exact_connection(date: date, train_line: str, time: str):
     }
 
 def get_statistics_of_day(date: date):
+    """
+    Returns a dictionary containing delay statistics for a given date.
+
+    Args:
+        date (date): The date for which to retrieve delay statistics.
+
+    Returns:
+        dict: A dictionary containing delay statistics for the given date.
+            The dictionary has two keys:
+                - "Meta Informations": A dictionary containing meta information about the statistics.
+                - "Delay Statistics": A dictionary containing the delay statistics.
+            The "Meta Informations" dictionary has one key:
+                - "Date": The date for which the statistics were retrieved.
+            The "Delay Statistics" dictionary has four keys:
+                - "Minimum Delay": The minimum delay for the given date.
+                - "Maximum Delay": The maximum delay for the given date, along with the train(s) that experienced the delay.
+                - "Average Delay": The average delay for the given date.
+                - "Median Delay": The median delay for the given date.
+    """
+
     df = FunctionalDF.from_csv(date)
     df = df.filter_content("DELAY_ANKUFT", lambda x: x != "")
     df = remove_negative_delay(df)
