@@ -11,11 +11,26 @@ import stats
 
 
 def get_available_dates() -> list[date]:
+    """
+    Returns a list of available dates for which data is available.
+
+    Returns:
+        list[date]: A list of available dates.
+    """
     files = filter(lambda f: isfile(join("./data", f)), listdir("./data"))
     return sorted({date.fromisoformat(f.removesuffix(".csv")) for f in files})
 
 
 def get_train_line(date: date) -> str:
+    """
+    Prompts the user to select a train line for a given date.
+
+    Args:
+        date (date): The date for which to select a train line.
+
+    Returns:
+        str: The selected train line.
+    """
     trains = stats.get_all_trains(date)
     return inquirer.fuzzy(
         message="Select the train line you want to look at",
@@ -24,6 +39,16 @@ def get_train_line(date: date) -> str:
 
 
 def get_start_time(date: date, train_line: str) -> datetime:
+    """
+    Prompts the user to select a start time for a given train line and date.
+
+    Args:
+        date (date): The date for which to select a start time.
+        train_line (str): The train line for which to select a start time.
+
+    Returns:
+        datetime: The selected start time.
+    """
     start_times = stats.get_start_times(date, train_line)
 
     selected_time = inquirer.select(
@@ -37,6 +62,16 @@ def get_start_time(date: date, train_line: str) -> datetime:
 
 
 def dict_to_table(table: Table, dictionary: dict) -> Table:
+    """
+    Converts a dictionary to a rich Table.
+
+    Args:
+        table (Table): The table to add the dictionary to.
+        dictionary (dict): The dictionary to convert to a table.
+
+    Returns:
+        Table: The updated table.
+    """
     for key, value in dictionary.items():
         if isinstance(value, dict):
             table.add_row(f"[bold][bright_magenta]{key}[/bold][/bright_magenta]")
@@ -46,7 +81,18 @@ def dict_to_table(table: Table, dictionary: dict) -> Table:
     table.add_section()
     return table
 
+
 def to_table(statistics: dict, train_line: str):
+    """
+    Prints a rich Table of statistics for a given train line.
+
+    Args:
+        statistics (dict): The statistics to print.
+        train_line (str): The train line for which to print the statistics.
+
+    Returns:
+        None
+    """
     table = Table(
         title=f"Delay of Train Line [bold]{train_line}[/bold]",
         show_header=True,
@@ -61,11 +107,29 @@ def to_table(statistics: dict, train_line: str):
 
 
 def run_statistic_of_day(date: date):
+    """
+    Runs statistics for a given date and outputs the results to a table.
+
+    Args:
+        date (date): The date for which to run the statistics.
+
+    Returns:
+        None
+    """
     statistics = stats.get_statistics_of_day(date)
     to_table(statistics, "All")
 
 
 def run_delay_of_exact_connection(date: date):
+    """
+    Runs the delay of exact connection for a given date.
+
+    Args:
+        date (date): The date for which to run the delay of exact connection.
+
+    Returns:
+        None
+    """
     train_line = get_train_line(date)
     time = get_start_time(date, train_line)
     delay = stats.get_delay_of_exact_connection(date, train_line, time)
@@ -74,6 +138,15 @@ def run_delay_of_exact_connection(date: date):
 
 
 def run_statistic_of_train_line(date: date):
+    """
+    Runs statistics of a train line for a given date.
+
+    Args:
+        date (date): The date for which to run the statistics.
+
+    Returns:
+        None
+    """
     train_line = get_train_line(date)
     statistics = stats.get_statistics_of_train(date, train_line)
 
@@ -81,6 +154,13 @@ def run_statistic_of_train_line(date: date):
 
 
 def main():
+    """
+    This function allows the user to select a date and a task to run. The available dates are obtained by calling the
+    get_available_dates() function. The user is prompted to select a date from the available dates, and then to select
+    a task to run from a list of three options. Depending on the selected task, one of three functions is called:
+    run_statistic_of_day(), run_delay_of_exact_connection(), or run_statistic_of_train_line(). If the selected task
+    is not recognized, an error message is printed.
+    """
     with Progress(
         SpinnerColumn(),
         TextColumn("[progress.description]{task.description}"),
