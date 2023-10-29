@@ -128,7 +128,7 @@ Der Vorteil von List Comprehension in Python ist, dass man Filter und Map zusamm
 
 ## Projektantrag
 
-Der Projektantrag kann (von den dafür berechtigten Personen) über [diesen Link](https://drive.google.com/drive/folders/1kZ_z_9GNwy37w36knby9_Ms1ZBDYCj99) angesehen werden.
+Der Projektantrag kann (von den dafür berechtigten Personen) über [diesen Link](https://drive.google.com/file/d/18z_Anoh4hKjiHOTmGllTRD2MPA4C1zwL/view?usp=sharing) angesehen werden.
 
 <br>
 
