@@ -31,7 +31,22 @@
 
 ### Wahl der Programmiersprache
 
-Als wir die imperative Programmiersprache gewählt haben, entschieden wir uns für [Python](https://www.python.org/), da man in Python sowohl imperativ als auch funktional programmieren kann. Durch Python Library [pandas](https://pandas.pydata.org/) können zudem einige zusätzliche funktionale Elemente verwendet werden. 
+Als wir die imperative Programmiersprache gewählt haben, entschieden wir uns für [Python](https://www.python.org/), da man in Python sowohl imperativ als auch funktional programmieren kann. Python bietet 2 verschiedene Möglichkeiten um funktional zu Programmieren. Zum einen kann man die relative bekannten Funktionalen Elemente wie `map()` oder `filter()` verwenden. Allerdings hat Python auch einen sehr speziellen Syntax mit dem man einfach funktional Listen, Dictionarys (In anderen Programmiersprachen oft als Map bekannt) und Sets zu bearbeiten. Der Syntax erinnerst stark an einen sehr änlichen Syntaxt aus Haskell mit dem man auch Listen bearbeiten kann 
+
+### Haskell
+
+```haskell
+[x * 2 | x <- [1..10], isEven x]
+
+```
+
+### Python
+
+```python
+[x * 2 for x in range(1, 11) if not (x % 2)]
+```
+
+Zudem bietet Pandas viele bekannte Libraries wie [NumPy](https://numpy.org/) oder auch [Pandas](https://pandas.pydata.org/) mit denen man leicht Daten laden, analysieren, bearbeiten und schliesslich auch auswerten kann. Wir haben uns allerdings dafür entschieden diese Library nur im imperativen Teil zu verwenden, da der Sinn des Projektes nicht darin besteht im Funktionalen Teil einfach die ganze Arbeit von einer Library durchzuführen.
 
 <br>
 
@@ -113,7 +128,7 @@ Der Vorteil von List Comprehension in Python ist, dass man Filter und Map zusamm
 
 ## Projektantrag
 
-Der Projektantrag kann (von den dafür berechtigten Personen) über [diesen Link](https://drive.google.com/drive/folders/1kZ_z_9GNwy37w36knby9_Ms1ZBDYCj99) angesehen werden.
+Der Projektantrag kann (von den dafür berechtigten Personen) über [diesen Link](https://drive.google.com/file/d/18z_Anoh4hKjiHOTmGllTRD2MPA4C1zwL/view?usp=sharing) angesehen werden.
 
 <br>
 
